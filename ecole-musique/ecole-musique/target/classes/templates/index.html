@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Tableau de Bord - Ecole de Musique')}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: sidebar}"></div>
+
+<main class="main-content">
+    <div class="header-actions">
+        <h1>Tableau de Bord</h1>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Total Instruments</h3>
+            <div class="value" th:text="${totalInstruments}">0</div>
+        </div>
+        <div class="stat-card">
+            <h3>Total Professeurs</h3>
+            <div class="value" th:text="${totalProfs}">0</div>
+        </div>
+        <div class="stat-card">
+            <h3>Total Cours</h3>
+            <div class="value" th:text="${totalCours}">0</div>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="table-container">
+            <h3 style="margin-bottom: 1rem; color: var(--primary);">Cours par Jour</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>Jour</th>
+                    <th>Nombre de Cours</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="stat : ${statsCoursJour}">
+                    <td th:text="${stat[0]}">Lundi</td>
+                    <td th:text="${stat[1]}">5</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(statsCoursJour)}">
+                    <td colspan="2" style="text-align: center;">Aucune donnée</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-container">
+            <h3 style="margin-bottom: 1rem; color: var(--secondary);">Instruments par Famille</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>Famille</th>
+                    <th>Quantité</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="stat : ${statsInstrumentsFamille}">
+                    <td th:text="${stat[0]}">Cordes</td>
+                    <td th:text="${stat[1]}">10</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(statsInstrumentsFamille)}">
+                    <td colspan="2" style="text-align: center;">Aucune donnée</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

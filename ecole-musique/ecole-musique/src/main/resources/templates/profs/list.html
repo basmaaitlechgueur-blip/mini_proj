@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Professeurs - Ecole de Musique')}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: sidebar}"></div>
+
+<main class="main-content">
+    <div class="header-actions">
+        <h1>Équipe Pédagogique</h1>
+        <a th:href="@{/profs/new}" class="btn btn-primary">+ Nouveau Professeur</a>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Spécialité</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="prof : ${profs}">
+                <td th:text="${prof.id}">1</td>
+                <td th:text="${prof.nom}">Jean Dupont</td>
+                <td th:text="${prof.specialite}">Piano</td>
+                <td>
+                    <a th:href="@{/profs/edit/{id}(id=${prof.id})}" class="btn btn-sm btn-secondary">Éditer</a>
+                    <a th:href="@{/profs/delete/{id}(id=${prof.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(profs)}">
+                <td colspan="4" style="text-align: center; color: var(--text-muted);">Aucun professeur enregistré.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+</body>
+</html>

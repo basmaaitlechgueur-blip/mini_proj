@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Planning des Cours - Ecole de Musique')}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: sidebar}"></div>
+
+<main class="main-content">
+    <div class="header-actions">
+        <h1>Planning des Cours</h1>
+        <a th:href="@{/cours/new}" class="btn btn-info">+ Programmer un Cours</a>
+    </div>
+
+    <!-- Filters -->
+    <form class="filters-bar" method="get" th:action="@{/cours}">
+        <div class="form-group" style="margin-bottom: 0;">
+            <label>Niveau</label>
+            <input type="text" name="niveau" class="form-control" th:value="${niveauSearch}" placeholder="Ex: Débutant...">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+            <label>Jour</label>
+            <input type="text" name="jour" class="form-control" th:value="${jourSearch}" placeholder="Ex: Lundi...">
+        </div>
+        <button type="submit" class="btn btn-info" style="height: fit-content; padding: 0.75rem 1rem;">Filtrer</button>
+        <a th:href="@{/cours}" class="btn btn-info" style="height: fit-content; padding: 0.75rem 1rem;">Réinitialiser</a>
+    </form>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Jour</th>
+                <th>Heure</th>
+                <th>Durée</th>
+                <th>Niveau</th>
+                <th>Professeur</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${cours}">
+                <td th:text="${c.id}">1</td>
+                <td th:text="${c.jour}">Lundi</td>
+                <td th:text="${c.heureDebut}">14:00</td>
+                <td th:text="${c.dureeMin + ' min'}">60 min</td>
+                <td><span class="badge badge-success" th:text="${c.niveau}">Débutant</span></td>
+                <td th:text="${c.prof.nom}">Jean Dupont</td>
+                <td>
+                    <a th:href="@{/cours/edit/{id}(id=${c.id})}" class="btn btn-sm btn-secondary">Éditer</a>
+                    <a th:href="@{/cours/delete/{id}(id=${c.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr ?')">Annuler</a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(cours)}">
+                <td colspan="7" style="text-align: center; color: var(--text-muted);">Aucun cours programmé.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+</body>
+</html>

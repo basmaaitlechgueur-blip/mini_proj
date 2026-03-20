@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Instruments - Ecole de Musique')}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: sidebar}"></div>
+
+<main class="main-content">
+    <div class="header-actions">
+        <h1>Gestion des Instruments</h1>
+        <a th:href="@{/instruments/new}" class="btn btn-primary">+ Nouvel Instrument</a>
+    </div>
+
+    <!-- Filters -->
+    <form class="filters-bar" method="get" th:action="@{/instruments}">
+        <div class="form-group" style="margin-bottom: 0;">
+            <label>Famille</label>
+            <input type="text" name="famille" class="form-control" th:value="${familleSearch}" placeholder="Ex: Cordes, Vents...">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+            <label>Disponibilité</label>
+            <select name="disponibilite" class="form-control">
+                <option value="">Tous</option>
+                <option value="true" th:selected="${disponibiliteSearch == true}">Disponible</option>
+                <option value="false" th:selected="${disponibiliteSearch == false}">Indisponible</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-info" style="height: fit-content; padding: 0.75rem 1rem;">Filtrer</button>
+        <a th:href="@{/instruments}" class="btn btn-info" style="height: fit-content; padding: 0.75rem 1rem;">Réinitialiser</a>
+    </form>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Famille</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="instrument : ${instruments}">
+                <td th:text="${instrument.id}">1</td>
+                <td th:text="${instrument.nom}">Guitare</td>
+                <td th:text="${instrument.famille}">Cordes</td>
+                <td>
+                    <span th:if="${instrument.disponibilite}" class="badge badge-success">Disponible</span>
+                    <span th:unless="${instrument.disponibilite}" class="badge badge-danger">Indisponible</span>
+                </td>
+                <td>
+                    <a th:href="@{/instruments/edit/{id}(id=${instrument.id})}" class="btn btn-sm btn-secondary">Éditer</a>
+                    <a th:href="@{/instruments/delete/{id}(id=${instrument.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(instruments)}">
+                <td colspan="5" style="text-align: center; color: var(--text-muted);">Aucun instrument trouvé.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+</body>
+</html>
